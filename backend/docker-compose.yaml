@@ -1,0 +1,29 @@
+version: '3.2'
+
+services:
+  postgres:
+      image: postgres:10
+      volumes:
+      - "/var/run/postgres/postgres.sock:/var/run/postgres/postgres.sock"
+      - "dbdata:/var/lib/postgresql/data"
+      environment:
+          - POSTGRES_USER=postgres
+          - POSTGRES_PASSWORD=postgres
+          - POSTGRES_DB=postgres
+      ports:
+      - 5432:5432
+
+
+  backend:
+    build: .
+    volumes:
+      - ./:/app
+    command: python -m aiohttp.web -H localhost -P 8080 backend.app:app
+    ports:
+      - "8080:8080"
+    depends_on:
+      - postgres
+
+
+volumes:
+  dbdata:
