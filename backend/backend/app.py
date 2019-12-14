@@ -6,7 +6,7 @@ import os
 from aiohttp import web
 import asyncpg
 
-from backend import handlers
+from backend import routes
 
 BASE_DIR = pathlib.Path(__file__).parent.parent
 DEFAULT_CONFIG_PATH = os.path.join(BASE_DIR, 'config.json')
@@ -36,10 +36,7 @@ async def close_database(app: web.Application) -> None:
 
 def init_app(argv=None) -> web.Application:
     app = web.Application()
-    app.add_routes([
-        web.get('/ping', handlers.ping_handler),
-        web.post('/api/me', handlers.me_handler),
-    ])
+    app.add_routes(routes.routes)
 
     args = parse_args()
     get_config(app, args.config_path)
