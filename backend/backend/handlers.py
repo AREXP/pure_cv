@@ -6,10 +6,10 @@ logger = logging.getLogger(__name__)
 
 
 set_status_sql = """
-INSERT INTO users (status, token)
-VALUES ($1, $2)
+INSERT INTO users (status, token, created_at, updated_at)
+VALUES ($1, $2, NOW(), NOW())
 ON CONFLICT (token)
-DO UPDATE SET status = $1
+DO UPDATE SET status = $1, updated_at = NOW()
 """
 
 async def ping_handler(request):
