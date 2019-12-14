@@ -18,6 +18,7 @@ services:
     build: .
     volumes:
       - ./:/app
+      - ./migrations:/opt/migrations
     command: python -m aiohttp.web -H localhost -P 8080 backend.app:app
     ports:
       - "8080:8080"

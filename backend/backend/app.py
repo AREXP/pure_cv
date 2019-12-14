@@ -7,6 +7,7 @@ from aiohttp import web
 import asyncpg
 
 from backend import routes
+from backend import init_db
 
 BASE_DIR = pathlib.Path(__file__).parent.parent
 DEFAULT_CONFIG_PATH = os.path.join(BASE_DIR, 'config.json')
@@ -26,14 +27,6 @@ def get_config(app: web.Application, config_path: str) -> web.Application:
     app.config = json.loads(config_str)
 
 
-async def init_database(app: web.Application) -> None:
-    pg_config = app.config['POSTGRES_DB_CONN']
-    app.pg_pool = await asyncpg.create_pool(**pg_config)
-
-async def close_database(app: web.Application) -> None:
-    await app.pg_pool.close()
-
-
 def init_app(argv=None) -> web.Application:
     app = web.Application()
     app.add_routes(routes.routes)
@@ -41,8 +34,8 @@ def init_app(argv=None) -> web.Application:
     args = parse_args()
     get_config(app, args.config_path)
 
-    app.on_startup.extend([init_database])
-    app.on_cleanup.extend([close_database])
+    app.on_startup.extend([init_db.init_database])
+    app.on_cleanup.extend([init_db.close_database])
 
     return app
 
