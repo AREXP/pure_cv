@@ -15,10 +15,10 @@ services:
 
 
   backend:
-    build: .
+    build: ./backend
     volumes:
-      - ./:/app
-      - ./migrations:/opt/migrations
+      - ./backend:/app
+      - ./backend/migrations:/opt/migrations
     command: py.test tests -vv
     ports:
       - "8080:8080"
