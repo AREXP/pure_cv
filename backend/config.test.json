@@ -8,6 +8,8 @@
     },
     "migrations_path": "/opt/migrations_test",
     "throttle_limits": {
-        "minute": 3
+        "second": 100,
+        "minute": 100,
+        "hour": 100
     }
 }

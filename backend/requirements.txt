@@ -2,4 +2,5 @@ aiohttp
 asyncpg
 pytest
 pytest-aiohttp
+pytest-freezegun
 redis
