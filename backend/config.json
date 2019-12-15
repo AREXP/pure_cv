@@ -6,5 +6,10 @@
         "password": "postgres",
         "database": "postgres"
     },
-    "migrations_path": "/opt/migrations"
+    "migrations_path": "/opt/migrations",
+    "throttle_limits": {
+        "second": 1,
+        "minute": 3,
+        "hour": 300
+    }
 }

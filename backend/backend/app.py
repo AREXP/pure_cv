@@ -5,6 +5,7 @@ import os
 
 from aiohttp import web
 import asyncpg
+import redis
 
 from backend import config
 from backend import routes
@@ -12,6 +13,7 @@ from backend import init_db
 
 BASE_DIR = pathlib.Path(__file__).parent.parent
 DEFAULT_CONFIG_PATH = os.path.join(BASE_DIR, 'config.json')
+PORT = 8080
 
 
 def parse_args():
@@ -22,16 +24,18 @@ def parse_args():
 
 
 def init_app(argv=None) -> web.Application:
+    args = parse_args()
     app = web.Application()
     app.add_routes(routes.routes)
 
-    args = parse_args()
     config.get_config(app, args.config_path)
+
+    app.redis = redis.Redis(host='redis')
 
     app.on_startup.extend([init_db.init_database])
     app.on_cleanup.extend([init_db.close_database])
 
     return app
 
-# app = init_app()
-web.run_app(init_app())
+def main(argv=None):
+    web.run_app(init_app(argv), port=PORT)

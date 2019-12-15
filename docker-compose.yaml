@@ -2,16 +2,16 @@ version: '3.2'
 
 services:
   postgres:
-      image: postgres:10
-      volumes:
-      - "/var/run/postgres/postgres.sock:/var/run/postgres/postgres.sock"
-      - "dbdata:/var/lib/postgresql/data"
-      environment:
-          - POSTGRES_USER=postgres
-          - POSTGRES_PASSWORD=postgres
-          - POSTGRES_DB=postgres
-      ports:
-      - 5432:5432
+    image: postgres:10
+    volumes:
+    - "/var/run/postgres/postgres.sock:/var/run/postgres/postgres.sock"
+    - "dbdata:/var/lib/postgresql/data"
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=postgres
+    ports:
+    - 5432:5432
 
 
   backend:
@@ -19,12 +19,22 @@ services:
     volumes:
       - ./backend:/app
       - ./backend/migrations:/opt/migrations
-    command: python -m aiohttp.web -H localhost -P 8080 backend.app:app
+    command: python -m aiohttp.web backend.app:main
     ports:
       - "8080:8080"
     depends_on:
       - postgres
+      - redis
 
+  redis:
+    image: redis:5.0.7
+    ports:
+      - 6379:6379
+    volumes:
+      - redis_data:/data
+    entrypoint: redis-server --appendonly yes
+    restart: always
 
 volumes:
   dbdata:
+  redis_data:

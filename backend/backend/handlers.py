@@ -2,6 +2,8 @@ import logging
 
 from aiohttp import web
 
+from backend import decorators
+
 logger = logging.getLogger(__name__)
 
 
@@ -15,6 +17,8 @@ DO UPDATE SET status = $1, updated_at = NOW()
 async def ping_handler(request):
     return web.Response(text='pong')
 
+
+@decorators.throttle
 async def me_handler(request):
     data = await request.json()
 

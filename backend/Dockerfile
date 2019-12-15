@@ -9,4 +9,4 @@ ADD . /app
 
 EXPOSE 8080
 
-# CMD [ "python", "./app/backend/app.py" ]
+# CMD [ "python", "backend/app.py" ]
