@@ -1,6 +1,18 @@
 version: '3.2'
 
 services:
+  backend:
+    build: .
+    volumes:
+      - ./:/app
+      - ./migrations:/opt/migrations
+    command: python -m aiohttp.web backend.app:main 
+    ports:
+      - "8080:8080"
+    depends_on:
+      - postgres
+
+
   postgres:
     image: postgres:10
     volumes:
@@ -12,19 +24,6 @@ services:
       - POSTGRES_DB=postgres
     ports:
     - 5432:5432
-
-
-  backend:
-    build: ./backend
-    volumes:
-      - ./backend:/app
-      - ./backend/migrations:/opt/migrations
-    command: python -m aiohttp.web backend.app:main
-    ports:
-      - "8080:8080"
-    depends_on:
-      - postgres
-      - redis
 
   redis:
     image: redis:5.0.7

@@ -4,7 +4,6 @@ import pathlib
 import os
 
 from aiohttp import web
-import asyncpg
 import redis
 
 from backend import config

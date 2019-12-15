@@ -1,0 +1,42 @@
+version: '3.2'
+
+services:
+  postgres_test:
+      image: postgres:10
+      volumes:
+      - "/var/run/postgres/postgres.sock:/var/run/postgres/postgres.sock"
+      - "dbdata_test:/var/lib/postgresql/data"
+      environment:
+          - POSTGRES_USER=postgres
+          - POSTGRES_PASSWORD=postgres
+          - POSTGRES_DB=postgres
+      ports:
+      - 5433:5432
+
+
+  backend:
+    build: .
+    volumes:
+      - ./:/app
+      - ./migrations_test:/opt/migrations_test
+    command: py.test tests -vv
+    ports:
+      - "8080:8080"
+    depends_on:
+      - postgres_test
+      - redis_test
+
+
+  redis_test:
+    image: redis:5.0.7
+    ports:
+      - 6380:6379
+    volumes:
+      - redis_data_test:/data
+    entrypoint: redis-server --appendonly yes
+    restart: always
+
+
+volumes: 
+    dbdata_test:
+    redis_data_test:

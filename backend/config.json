@@ -9,7 +9,7 @@
     "migrations_path": "/opt/migrations",
     "throttle_limits": {
         "second": 1,
-        "minute": 3,
+        "minute": 30,
         "hour": 300
     }
 }
