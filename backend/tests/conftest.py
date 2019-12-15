@@ -23,4 +23,4 @@ async def test_client(aiohttp_client):
     app.on_startup.extend([init_db.init_database])
     app.on_cleanup.extend([init_db.close_database])
 
-    yield await aiohttp_client(app)
+    return await aiohttp_client(app)

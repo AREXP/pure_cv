@@ -20,6 +20,7 @@ def parse_args():
     args, unknown = parser.parse_known_args()
     return args
 
+
 def init_app(argv=None) -> web.Application:
     app = web.Application()
     app.add_routes(routes.routes)

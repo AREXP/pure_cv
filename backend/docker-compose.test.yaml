@@ -19,7 +19,7 @@ services:
     volumes:
       - ./:/app
       - ./migrations:/opt/migrations
-    command: py.test tests
+    command: py.test tests -vv
     ports:
       - "8080:8080"
     depends_on:

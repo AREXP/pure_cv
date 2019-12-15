@@ -8,6 +8,4 @@ CREATE TABLE users (
     updated_at TIMESTAMP NOT NULL
 );
 
-TRUNCATE users;
-
 CREATE INDEX token_idx ON users (token);
